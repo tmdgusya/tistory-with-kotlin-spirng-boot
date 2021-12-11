@@ -18,7 +18,7 @@ class ExternalApiAdaptor<T>(
         url: String,
         httpHeaders: HttpHeaders? = null,
         body: JvmType.Object? = null,
-        clazz: Class<T> = JvmType.Object::class as Class<T>
+        clazz: Class<T>
     ): ResponseEntity<T> {
         return callExternalApi(url, HttpMethod.GET, httpHeaders, body, clazz)
     }
@@ -27,7 +27,7 @@ class ExternalApiAdaptor<T>(
         url: String,
         httpHeaders: HttpHeaders? = null,
         body: JvmType.Object? = null,
-        clazz: Class<T> = JvmType.Object::class as Class<T>
+        clazz: Class<T>
     ): ResponseEntity<T> {
         return callExternalApi(url, HttpMethod.POST, httpHeaders, body, clazz)
     }
