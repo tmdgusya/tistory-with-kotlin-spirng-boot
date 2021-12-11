@@ -6,7 +6,6 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
-import org.springframework.web.client.exchange
 import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 @Component
@@ -15,10 +14,10 @@ class ExternalApiAdaptor<T>(
 ) {
 
     public fun get(
-        url: String,
-        httpHeaders: HttpHeaders? = null,
-        body: JvmType.Object? = null,
-        clazz: Class<T>
+            url: String,
+            httpHeaders: HttpHeaders? = null,
+            body: JvmType.Object? = null,
+            clazz: Class<T>
     ): ResponseEntity<T> {
         return callExternalApi(url, HttpMethod.GET, httpHeaders, body, clazz)
     }

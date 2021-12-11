@@ -1,13 +1,15 @@
 package open.tistory.tistoryopenapi.adapter.external.tistory
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import open.tistory.tistoryopenapi.adapter.external.ExternalApiAdaptor
 import open.tistory.tistoryopenapi.env.TistoryEnvProvider
 import org.springframework.stereotype.Component
 
 @Component
-class TistoryExternalApiAdaptor(
+class TistoryExternalAuthAdaptor(
         private val externalApiAdaptor: ExternalApiAdaptor<String>,
-        private val tistoryEnvProvider: TistoryEnvProvider
+        private val tistoryEnvProvider: TistoryEnvProvider,
+        private val objectMapper: ObjectMapper
 ) : TistoryExternalApi {
 
     private val GET_TOKEN_API_URL = "https://www.tistory.com/oauth/authorize?" +
@@ -33,7 +35,26 @@ class TistoryExternalApiAdaptor(
             return "none"
         }
 
-        return accessToken.body.toString();
+        val readTree = objectMapper.readTree(accessToken.body.toString())
+
+        return readTree.get("access_token").toString();
+    }
+
+    override fun getBlogInfo(accessToken: String): String {
+        val blogInfoExternalApiURL = createBlogPostList(accessToken);
+        val blogJson = externalApiAdaptor.get(blogInfoExternalApiURL, clazz = String::class.java)
+
+        /**
+         * 후에 에러처리 필요함
+         */
+        if (blogJson.body === null) {
+            return "none"
+        }
+
+        val readTree = objectMapper.readTree(blogJson.body.toString())
+        println(readTree)
+
+        return readTree.toString();
     }
 
     private fun createAccessTokenExternalAPIUrl(code: String) : String {
@@ -42,8 +63,8 @@ class TistoryExternalApiAdaptor(
 
     private fun createBlogPostList(accessToken: String) : String {
         return "https://www.tistory.com/apis/blog/info?" +
-                "  access_token=${accessToken}" +
-                "  &output=json"
+                "access_token=${accessToken}" +
+                "&output=json"
     }
 
 }

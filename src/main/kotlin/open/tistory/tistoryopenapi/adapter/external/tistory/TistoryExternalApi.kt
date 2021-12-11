@@ -14,4 +14,8 @@ interface TistoryExternalApi {
      */
     fun loginWithCode(code: String) : String
 
+    /**
+     * Blog 정보를 가져오는 외부 API 를 호출합니다.
+     */
+    fun getBlogInfo(accessToken: String) : String
 }
