@@ -16,4 +16,10 @@ class TistoryEnvProvider {
 
     @Value("\${responseType}")
     lateinit var responseType: String
+
+    @Value("\${blogUrl}")
+    lateinit var blogUrl: String
+
+    @Value("\${clientSecret}")
+    lateinit var clientSecret: String
 }
